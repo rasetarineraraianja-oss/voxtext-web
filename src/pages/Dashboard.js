@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
-import Transcribe from './Transcribe';
 import Download from './Download';
-import Subscription from './Subscription';
-import Player from './Player';
-
 
 function Dashboard({ user, onLogout, apiUrl }) {
-  const [tab, setTab] = useState('transcribe');
-
-  const tabs = [
-    { key: 'transcribe', label: '🎙 Transcrire' },
-    { key: 'download', label: '⬇ Télécharger' },
-    { key: 'player', label: '🎵 Lecteur' },
-    { key: 'subscription', label: '💳 Abonnement' },
-  ];
-
   return (
     <div style={styles.container}>
       {/* Header */}
@@ -24,9 +11,6 @@ function Dashboard({ user, onLogout, apiUrl }) {
           <span style={styles.logoSub}>Transcription IA</span>
         </div>
         <div style={styles.headerRight}>
-          <span style={styles.badge}>
-            {user.plan === 'pro' ? '⭐ PRO' : '🆓 Free'}
-          </span>
           <span style={styles.email}>{user.email}</span>
           <button style={styles.logoutBtn} onClick={onLogout}>
             Déconnexion
@@ -34,28 +18,22 @@ function Dashboard({ user, onLogout, apiUrl }) {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div style={styles.tabBar}>
-        {tabs.map(t => (
-          <button
-            key={t.key}
-            style={{
-              ...styles.tabBtn,
-              ...(tab === t.key ? styles.tabActive : {}),
-            }}
-            onClick={() => setTab(t.key)}
-          >
-            {t.label}
-          </button>
-        ))}
+      {/* Banner */}
+      <div style={styles.banner}>
+        <span>🎙 Vous voulez transcrire vos audios ?</span>
+
+          href="https://github.com/rasetarineraraianja-oss/voxtext-backend/releases"
+          target="_blank"
+          rel="noreferrer"
+          style={styles.bannerLink}
+        >
+          Télécharger l'appli VoxText →
+        </a>
       </div>
 
       {/* Content */}
       <div style={styles.content}>
-        {tab === 'transcribe' && <Transcribe user={user} apiUrl={apiUrl} />}
-        {tab === 'download' && <Download user={user} apiUrl={apiUrl} />}
-        {tab === 'subscription' && <Subscription user={user} apiUrl={apiUrl} />}
-        {tab === 'player' && <Player user={user} />}
+        <Download user={user} apiUrl={apiUrl} />
       </div>
     </div>
   );
@@ -76,14 +54,6 @@ const styles = {
   logoText: { fontSize: 20, fontWeight: 'bold', color: 'white' },
   logoSub: { fontSize: 12, color: '#a0a0c0' },
   headerRight: { display: 'flex', alignItems: 'center', gap: 12 },
-  badge: {
-    background: '#6c63ff',
-    color: 'white',
-    padding: '4px 12px',
-    borderRadius: 20,
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
   email: { color: '#a0a0c0', fontSize: 13 },
   logoutBtn: {
     background: '#ff4444',
@@ -94,25 +64,20 @@ const styles = {
     cursor: 'pointer',
     fontSize: 13,
   },
-  tabBar: {
-    display: 'flex',
-    gap: 4,
-    padding: '16px 24px 0',
+  banner: {
+    background: '#1e1e2e',
     borderBottom: '1px solid #2a2a3a',
-  },
-  tabBtn: {
-    background: 'transparent',
+    padding: '12px 24px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     color: '#a0a0c0',
-    border: 'none',
-    padding: '10px 20px',
-    cursor: 'pointer',
-    fontSize: 14,
-    borderRadius: '8px 8px 0 0',
+    fontSize: 13,
   },
-  tabActive: {
-    color: 'white',
+  bannerLink: {
+    color: '#6c63ff',
+    textDecoration: 'none',
     fontWeight: 'bold',
-    borderBottom: '2px solid #6c63ff',
   },
   content: { padding: 24 },
 };
